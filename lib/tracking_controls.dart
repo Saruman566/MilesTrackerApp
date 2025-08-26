@@ -17,10 +17,26 @@ class TrackingControls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(icon: Image.asset('images/play.png'), onPressed: onStart),
-        IconButton(icon: Image.asset('images/stop.png'), onPressed: onStop),
-        IconButton(icon: Image.asset('images/reset.png'), onPressed: onReset),
+        Flexible(
+          child: IconButton(
+            icon: Image.asset('images/play.png'),
+            onPressed: onStart,
+          ),
+        ),
+        Flexible(
+          child: IconButton(
+            icon: Image.asset('images/stop.png'),
+            onPressed: onStop,
+          ),
+        ),
+        Flexible(
+          child: IconButton(
+            icon: Image.asset('images/reset.png'),
+            onPressed: onReset,
+          ),
+        ),
       ],
     );
   }
+
 }
