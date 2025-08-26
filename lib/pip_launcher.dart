@@ -13,7 +13,7 @@ void launchPip(TrackingController controller) {
             valueListenable: controller.milesNotifier,
             builder: (context, value, _) {
               return Text(
-                '$value miles',
+                value > 0 ? '$value miles' : 'Reserve',
                 style: TextStyle(
                   fontSize: 200,
                   color: controller.getMilesColor(),

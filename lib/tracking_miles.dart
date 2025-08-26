@@ -29,7 +29,7 @@ class _TrackingMilesState extends State<TrackingMiles> {
         ValueListenableBuilder<int>(
           valueListenable: widget.controller.milesNotifier,
           builder: (_, value, __) => Text(
-            "$value",
+            value != 0 ? '$value' : 'Reserve',
             style: TextStyle(
               fontSize: widget.isPip ? 50 : 90,
               fontWeight: FontWeight.bold,
@@ -40,7 +40,7 @@ class _TrackingMilesState extends State<TrackingMiles> {
       ValueListenableBuilder<String>(
         valueListenable: widget.controller.statusNotifier,
         builder: (_, value, __) => Text(
-          value,
+          value != 0 ? '$value' : 'Reserve',
           style: TextStyle(
             fontSize: widget.isPip ? 12 : 16,
             color: Colors.white70,

@@ -48,7 +48,7 @@ class _MileToReserveAppState extends State<MileToReserveApp>
       home: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          title: const Text("MilesTracker"),
+          title: Center(child:  Text("MilesTracker"),),
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
           actions: [

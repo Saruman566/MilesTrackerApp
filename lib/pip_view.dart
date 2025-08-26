@@ -22,7 +22,7 @@ class PipOverlay extends StatelessWidget {
           return FittedBox(
             fit: BoxFit.contain,
             child: Text(
-              '$value miles',
+              value > 0 ? '$value miles' : 'Reserve',
               style: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,

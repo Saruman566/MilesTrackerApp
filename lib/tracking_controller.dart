@@ -114,7 +114,7 @@ class TrackingController {
       _updateStatus("Tracking aktiv");
 
       // Debug-Ausgabe
-      print("UI-Update: Rest=$milesBeforeRefuel mi");
+      // print("UI-Update: Rest=$milesBeforeRefuel mi");
     });
   }
 
