@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TrackingController {
   final int _startMiles = 153; // Basiswert
@@ -9,7 +10,7 @@ class TrackingController {
   StreamSubscription<Position>? positionStream;
   String status = "Bereit";
   double _distanceMeters = 0; // interne Distanz in Metern
-  Timer? _uiTimer; // Timer für UI-Updates alle 250 Sekunden
+  Timer? _uiTimer; // Timer für UI-Updates alle 17 Sekunden
 
   // Notifier für normale App
   ValueNotifier<int> milesNotifier = ValueNotifier<int>(153);
@@ -18,6 +19,35 @@ class TrackingController {
   // Notifier für PiP
   ValueNotifier<int> milesPipNotifier = ValueNotifier<int>(153);
 
+  // ================== SharedPreferences ==================
+  static const String _prefsKey = "milesBeforeRefuel";
+
+  TrackingController() {
+    // Automatisch gespeicherte Miles laden beim Erstellen
+    _init();
+  }
+
+  Future<void> _init() async {
+    await loadMiles();
+  }
+
+  Future<void> loadMiles() async {
+    final prefs = await SharedPreferences.getInstance();
+    milesBeforeRefuel = prefs.getInt(_prefsKey) ?? _startMiles;
+    milesNotifier.value = milesBeforeRefuel;
+    milesPipNotifier.value = milesBeforeRefuel;
+
+    // distanceMeters so setzen, dass das Tracking nahtlos weiterläuft
+    _distanceMeters = (_startMiles - milesBeforeRefuel) * 1609.34;
+  }
+
+
+  Future<void> saveMiles() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_prefsKey, milesBeforeRefuel);
+  }
+
+  // ================== Tracking ==================
   Future<void> startTracking() async {
     if (positionStream != null) return;
 
@@ -42,7 +72,6 @@ class TrackingController {
 
     _updateStatus("Tracking gestartet");
 
-    // Stream für Positionsupdates
     positionStream = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -59,15 +88,11 @@ class TrackingController {
         );
 
         _distanceMeters += distanceInMeters;
-
-        // Debug-Ausgabe
-        // print("Gefahren: ${_distanceMeters.toStringAsFixed(1)} m");
       }
 
       lastPosition = position;
     });
 
-    // Timer für UI-Updates alle 250 Sekunden
     startUiTimer();
   }
 
@@ -86,6 +111,7 @@ class TrackingController {
     milesNotifier.value = milesBeforeRefuel;
     milesPipNotifier.value = milesBeforeRefuel;
 
+    saveMiles(); // sofort speichern
     stopTracking();
 
     _updateStatus("Zurückgesetzt");
@@ -113,8 +139,7 @@ class TrackingController {
       milesPipNotifier.value = milesBeforeRefuel;
       _updateStatus("Tracking aktiv");
 
-      // Debug-Ausgabe
-      // print("UI-Update: Rest=$milesBeforeRefuel mi");
+      saveMiles(); // bei jedem Update speichern
     });
   }
 

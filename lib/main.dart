@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'buttons.dart';
 import 'tracking_controller.dart';
-import 'package:simple_pip_mode/simple_pip.dart';
 
 void main() => runApp(const MileToReserveApp());
 
@@ -40,38 +39,30 @@ class _MileToReserveAppState extends State<MileToReserveApp>
 
   @override
   Widget build(BuildContext context) {
-    // PiP-Erkennung über Bildschirmbreite
-    // final bool isPip = MediaQuery.of(context).size.width < 400;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          title: Center(child:  Text("MilesTracker"),),
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.picture_in_picture),
-              onPressed: () => SimplePip().enterPipMode(),
-            ),
-          ],
-        ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(0.1),
-            child: ButtonsPage(
-              controller: controller,
-              isPip: MediaQuery.of(context).size.width < 400,
+          child: SizedBox.expand(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/backgroundapp.png'),
+                  fit: BoxFit.cover, // füllt gesamte Fläche
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(55),
+                child: ButtonsPage(
+                  controller: controller,
+                  isPip: MediaQuery.of(context).size.width < 400,
+                ),
+              ),
             ),
           ),
         ),
-
-
-
       ),
-
       );
   }
 }

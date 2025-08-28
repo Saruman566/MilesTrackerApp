@@ -25,30 +25,31 @@ class _TrackingMilesState extends State<TrackingMiles> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
+      children: [ Padding(
+        padding: const EdgeInsets.fromLTRB(75, 0, 0, 2),
+        child: ValueListenableBuilder<String>(
+          valueListenable: widget.controller.statusNotifier,
+          builder: (_, value, __) => Text(
+            value != '0' ? '$value' : 'Reserve',
+            style: TextStyle(
+              fontSize: widget.isPip ? 12 : 19,
+              color: Colors.white70,
+            ),
+          ),
+        ),
+      ),
         ValueListenableBuilder<int>(
           valueListenable: widget.controller.milesNotifier,
           builder: (_, value, __) => Text(
             value != 0 ? '$value' : 'Reserve',
             style: TextStyle(
-              fontSize: widget.isPip ? 50 : 90,
+              fontSize: widget.isPip ? 50 : 110,
               fontWeight: FontWeight.bold,
               color: widget.controller.getMilesColor(),
             ),
           ),
         ),
-      ValueListenableBuilder<String>(
-        valueListenable: widget.controller.statusNotifier,
-        builder: (_, value, __) => Text(
-          value != 0 ? '$value' : 'Reserve',
-          style: TextStyle(
-            fontSize: widget.isPip ? 12 : 16,
-            color: Colors.white70,
-          ),
-        ),
 
-
-    ),
         const SizedBox(height: 30),
         TrackingControls(
           onStart: () => widget.controller.startTracking(),

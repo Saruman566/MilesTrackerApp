@@ -9,19 +9,19 @@ void launchPip(TrackingController controller) {
       home: Center(
         child: FittedBox(
           fit: BoxFit.contain,
-          child: ValueListenableBuilder<int>(
-            valueListenable: controller.milesNotifier,
-            builder: (context, value, _) {
-              return Text(
-                value > 0 ? '$value miles' : 'Reserve',
-                style: TextStyle(
-                  fontSize: 200,
-                  color: controller.getMilesColor(),
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            },
-          ),
+            child: ValueListenableBuilder<int>(
+              valueListenable: controller.milesNotifier,
+              builder: (context, value, _) {
+                return Text(
+                  value > 0 ? '$value miles' : 'Reserve',
+                  style: TextStyle(
+                    fontSize: 200,
+                    color: controller.getMilesColor(),
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
         ),
       ),
     ),
