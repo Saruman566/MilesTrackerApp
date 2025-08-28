@@ -14,34 +14,75 @@ class TrackingControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 147, 0, 2), // Padding um die gesamte Row
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center, // zentriert die Icons in der Row
-        children: [
-          Flexible(
-            child: IconButton(
-              icon: Image.asset('images/play.png',
-                width: 100,
-                height: 100,
+      padding: const EdgeInsets.fromLTRB(0, 135, 0, 0),
+      child: Container(
+        color: Colors.transparent,
+        width: 900,
+        height: 92,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                child: IconButton(
+                  icon: Opacity(
+                    opacity: 0.0,
+                    child: SizedBox(
+                    width: 100,
+                    height: 100,
+                  ),),
+                  onPressed: onStart,
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.green.withOpacity(0.5),
+                    padding: EdgeInsets.all(0),
+                  ),
+                ),
               ),
-              onPressed: onStart,
             ),
-
-          ),
-          Flexible(
-            child: IconButton(
-              icon: Image.asset('images/stop.png'),
-              onPressed: onStop,
+            const SizedBox(width: 5),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),
+                child: IconButton(
+                  icon: Opacity(
+                    opacity: 0.0,
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                    ),),
+                  onPressed: onStart,
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.red.withOpacity(0.5),
+                    padding: EdgeInsets.all(0),
+                  ),
+                ),
+              ),
             ),
-          ),
-          Flexible(
-            child: IconButton(
-              icon: Image.asset('images/reset.png'),
-              onPressed: onReset,
+            const SizedBox(width: 5),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: IconButton(
+                  icon: Opacity(
+                    opacity: 0.0,
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                    ),),
+                  onPressed: onStart,
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.blue.withOpacity(0.5),
+                    padding: EdgeInsets.all(0),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-  }}
+  }
+}

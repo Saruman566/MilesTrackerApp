@@ -16,7 +16,13 @@ class ButtonsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
-      child: TrackingMiles(controller: controller, isPip: isPip),
+      child: Container(
+        width: 900,
+        child: TrackingMiles(
+          controller: controller,
+          isPip: isPip,
+        ),
+      ),
     );
   }
 }

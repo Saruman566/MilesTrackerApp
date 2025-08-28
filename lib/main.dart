@@ -49,11 +49,11 @@ class _MileToReserveAppState extends State<MileToReserveApp>
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/backgroundapp.png'),
-                  fit: BoxFit.cover, // füllt gesamte Fläche
+                  fit: BoxFit.cover,
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(55),
+                padding: const EdgeInsets.fromLTRB(0, 55, 0, 0),
                 child: ButtonsPage(
                   controller: controller,
                   isPip: MediaQuery.of(context).size.width < 400,

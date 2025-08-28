@@ -4,26 +4,23 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TrackingController {
-  final int _startMiles = 153; // Basiswert
+  final int _startMiles = 153;
   int milesBeforeRefuel = 153;
   Position? lastPosition;
   StreamSubscription<Position>? positionStream;
   String status = "Bereit";
-  double _distanceMeters = 0; // interne Distanz in Metern
-  Timer? _uiTimer; // Timer für UI-Updates alle 17 Sekunden
+  double _distanceMeters = 0;
+  Timer? _uiTimer;
 
-  // Notifier für normale App
   ValueNotifier<int> milesNotifier = ValueNotifier<int>(153);
   ValueNotifier<String> statusNotifier = ValueNotifier<String>("Bereit");
 
-  // Notifier für PiP
   ValueNotifier<int> milesPipNotifier = ValueNotifier<int>(153);
 
-  // ================== SharedPreferences ==================
+
   static const String _prefsKey = "milesBeforeRefuel";
 
   TrackingController() {
-    // Automatisch gespeicherte Miles laden beim Erstellen
     _init();
   }
 
@@ -36,8 +33,6 @@ class TrackingController {
     milesBeforeRefuel = prefs.getInt(_prefsKey) ?? _startMiles;
     milesNotifier.value = milesBeforeRefuel;
     milesPipNotifier.value = milesBeforeRefuel;
-
-    // distanceMeters so setzen, dass das Tracking nahtlos weiterläuft
     _distanceMeters = (_startMiles - milesBeforeRefuel) * 1609.34;
   }
 
@@ -47,7 +42,6 @@ class TrackingController {
     await prefs.setInt(_prefsKey, milesBeforeRefuel);
   }
 
-  // ================== Tracking ==================
   Future<void> startTracking() async {
     if (positionStream != null) return;
 
@@ -111,7 +105,7 @@ class TrackingController {
     milesNotifier.value = milesBeforeRefuel;
     milesPipNotifier.value = milesBeforeRefuel;
 
-    saveMiles(); // sofort speichern
+    saveMiles();
     stopTracking();
 
     _updateStatus("Zurückgesetzt");
@@ -128,7 +122,6 @@ class TrackingController {
     return Colors.red;
   }
 
-  // ===================== Timer für UI =====================
   void startUiTimer() {
     _uiTimer?.cancel();
     _uiTimer = Timer.periodic(const Duration(seconds: 17), (_) {
@@ -139,7 +132,7 @@ class TrackingController {
       milesPipNotifier.value = milesBeforeRefuel;
       _updateStatus("Tracking aktiv");
 
-      saveMiles(); // bei jedem Update speichern
+      saveMiles();
     });
   }
 

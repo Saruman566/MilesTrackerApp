@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';        // ✅ für Widget, Column, Text, etc.
-import 'tracking_controller.dart';             // ✅ für TrackingController
-import 'tracking_controls.dart';               // ✅ für TrackingControls
+import 'package:flutter/material.dart';
+import 'tracking_controller.dart';
+import 'tracking_controls.dart';
 
 
 class TrackingMiles extends StatefulWidget {
@@ -25,8 +25,9 @@ class _TrackingMilesState extends State<TrackingMiles> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
-      children: [ Padding(
-        padding: const EdgeInsets.fromLTRB(75, 0, 0, 2),
+      children: [
+        Padding(
+        padding: const EdgeInsets.fromLTRB(75, 0, 0, 0),
         child: ValueListenableBuilder<String>(
           valueListenable: widget.controller.statusNotifier,
           builder: (_, value, __) => Text(
@@ -38,19 +39,21 @@ class _TrackingMilesState extends State<TrackingMiles> {
           ),
         ),
       ),
-        ValueListenableBuilder<int>(
+    Transform.translate(
+    offset: const Offset(0, -10), // y negativ = nach oben verschieben
+    child: ValueListenableBuilder<int>(
           valueListenable: widget.controller.milesNotifier,
           builder: (_, value, __) => Text(
             value != 0 ? '$value' : 'Reserve',
             style: TextStyle(
-              fontSize: widget.isPip ? 50 : 110,
+              fontSize: widget.isPip ? 50 : 125,
               fontWeight: FontWeight.bold,
               color: widget.controller.getMilesColor(),
             ),
           ),
         ),
-
-        const SizedBox(height: 30),
+    ),
+        const SizedBox(height: 8),
         TrackingControls(
           onStart: () => widget.controller.startTracking(),
           onStop: () => widget.controller.stopTracking(),
