@@ -14,73 +14,39 @@ class TrackingControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 135, 0, 0),
-      child: Container(
-        color: Colors.transparent,
+      padding: const EdgeInsets.fromLTRB(0, 133, 0, 0),
+      child: SizedBox(
         width: 900,
         height: 92,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                child: IconButton(
-                  icon: Opacity(
-                    opacity: 0.0,
-                    child: SizedBox(
-                    width: 100,
-                    height: 100,
-                  ),),
-                  onPressed: onStart,
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.green.withOpacity(0.5),
-                    padding: EdgeInsets.all(0),
-                  ),
-                ),
-              ),
-            ),
+            // Start Button
+            _buildButton(onStart, 15, 7),
             const SizedBox(width: 5),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),
-                child: IconButton(
-                  icon: Opacity(
-                    opacity: 0.0,
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                    ),),
-                  onPressed: onStart,
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.red.withOpacity(0.5),
-                    padding: EdgeInsets.all(0),
-                  ),
-                ),
-              ),
-            ),
+            // Stop Button
+            _buildButton(onStop, 0, 7),
             const SizedBox(width: 5),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: IconButton(
-                  icon: Opacity(
-                    opacity: 0.0,
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                    ),),
-                  onPressed: onStart,
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.blue.withOpacity(0.5),
-                    padding: EdgeInsets.all(0),
-                  ),
-                ),
-              ),
-            ),
+            // Reset Button
+            _buildButton(onReset, 0, 10),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(VoidCallback onTap, double paddingLeft, double paddingRight) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(paddingLeft, 0, paddingRight, 0),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          child: SizedBox(
+            width: 100,
+            height: 100,
+          ),
         ),
       ),
     );

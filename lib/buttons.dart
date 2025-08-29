@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tracking_miles.dart';
 import 'tracking_controller.dart';
+import 'MilesInput.dart';
 
 class ButtonsPage extends StatelessWidget {
   final TrackingController controller;
@@ -14,15 +15,23 @@ class ButtonsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
+    return Center(
       child: Container(
         width: 900,
-        child: TrackingMiles(
-          controller: controller,
-          isPip: isPip,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TrackingMiles(
+              controller: controller,
+              isPip: isPip,
+            ),
+            const SizedBox(height: 118),
+            MilesInput(),
+          ],
         ),
       ),
     );
   }
+
+
 }

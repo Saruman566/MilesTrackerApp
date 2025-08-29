@@ -40,7 +40,7 @@ class _TrackingMilesState extends State<TrackingMiles> {
         ),
       ),
     Transform.translate(
-    offset: const Offset(0, -10), // y negativ = nach oben verschieben
+    offset: const Offset(0, -10),
     child: ValueListenableBuilder<int>(
           valueListenable: widget.controller.milesNotifier,
           builder: (_, value, __) => Text(

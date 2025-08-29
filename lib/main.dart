@@ -53,7 +53,7 @@ class _MileToReserveAppState extends State<MileToReserveApp>
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 55, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: ButtonsPage(
                   controller: controller,
                   isPip: MediaQuery.of(context).size.width < 400,
