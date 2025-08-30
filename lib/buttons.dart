@@ -3,16 +3,21 @@ import 'tracking_miles.dart';
 import 'tracking_controller.dart';
 import 'MilesInput.dart';
 
-class ButtonsPage extends StatelessWidget {
-  final TrackingController controller;
+class ButtonsPage extends StatefulWidget {
+  final TrackingController trackingController;
   final bool isPip;
 
   const ButtonsPage({
     super.key,
-    required this.controller,
+    required this.trackingController,
     required this.isPip,
   });
 
+  @override
+  State<ButtonsPage> createState() => _ButtonsPageState();
+}
+
+class _ButtonsPageState extends State<ButtonsPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,16 +27,19 @@ class ButtonsPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             TrackingMiles(
-              controller: controller,
-              isPip: isPip,
+              controller: widget.trackingController,
+              isPip: widget.isPip,
             ),
             const SizedBox(height: 118),
-            MilesInput(),
+            MilesInput(
+              controller: widget.trackingController,
+              onMilesChanged: () {
+                setState(() {}); // ✅ jetzt funktioniert es
+              },
+            ),
           ],
         ),
       ),
     );
   }
-
-
 }

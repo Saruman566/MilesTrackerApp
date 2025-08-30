@@ -1,47 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'tracking_controller.dart';
 
-class MilesInput extends StatelessWidget {
+class MilesInput extends StatefulWidget {
+  final TrackingController controller;
+  final VoidCallback? onMilesChanged;
+
+  const MilesInput({
+    Key? key,
+    required this.controller,
+    this.onMilesChanged,
+  }) : super(key: key);
+
+  @override
+  State<MilesInput> createState() => _MilesInputState();
+}
+
+class _MilesInputState extends State<MilesInput> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void changeMiles() {
+    String input = _controller.text;
+    int? drivenMiles = int.tryParse(input);
+
+    if (drivenMiles != null) {
+      widget.controller.driveMiles(drivenMiles);
+      _controller.clear();
+
+      if (widget.onMilesChanged != null) {
+        widget.onMilesChanged!();
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:
-      FittedBox(
+      child: FittedBox(
         fit: BoxFit.contain,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-                width: 150,
-                child: TextField(
-                  maxLength: 3,
-                  style: TextStyle(
-                    fontSize: 75,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    counterText: "",
-                    contentPadding: EdgeInsets.only(left: 20),
-                  ),
-                  textAlign: TextAlign.right,
-                  showCursor: false,
-                  keyboardType: TextInputType.number,
+              width: 150,
+              child: TextField(
+                controller: _controller,
+                maxLength: 3,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly, // nur Zahlen
+                ],
+                style: const TextStyle(
+                  fontSize: 75,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
                 ),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  counterText: "",
+                  contentPadding: EdgeInsets.only(left: 20),
+                ),
+                textAlign: TextAlign.right,
+                showCursor: false,
               ),
-              const SizedBox(height: 2),
-              ElevatedButton(
-                onPressed: null,
-                child: const Text("Set Miles",style: TextStyle(
-                  color: Colors.transparent,
+            ),
+            const SizedBox(height: 2),
+            ElevatedButton(
+              onPressed: changeMiles,
+              child: const Text(
+                "Set Miles",
+                style: TextStyle(
                   fontSize: 55,
                   fontWeight: FontWeight.bold,
-                ),
+
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -90,6 +90,18 @@ class TrackingController {
     startUiTimer();
   }
 
+
+  void driveMiles(int drivenMiles) {
+    milesBeforeRefuel = (_startMiles - drivenMiles).clamp(0, _startMiles);
+
+    milesNotifier.value = milesBeforeRefuel;
+    milesPipNotifier.value = milesBeforeRefuel;
+
+    _distanceMeters = (_startMiles - milesBeforeRefuel) * 1609.34;
+
+    saveMiles();
+  }
+
   void stopTracking() {
     positionStream?.cancel();
     positionStream = null;

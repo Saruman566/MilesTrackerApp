@@ -55,7 +55,7 @@ class _MileToReserveAppState extends State<MileToReserveApp>
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: ButtonsPage(
-                  controller: controller,
+                  trackingController: controller,
                   isPip: MediaQuery.of(context).size.width < 400,
                 ),
               ),
