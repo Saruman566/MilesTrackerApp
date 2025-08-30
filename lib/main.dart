@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'buttons.dart';
 import 'tracking_controller.dart';
+import 'package:simple_pip_mode/simple_pip.dart';
+import 'pip_view.dart';
 
 void main() => runApp(const MileToReserveApp());
 
@@ -37,32 +39,65 @@ class _MileToReserveAppState extends State<MileToReserveApp>
     }
   }
 
+  void enterPip() {
+    SimplePip().enterPipMode();
+    setState(() => isInPip = true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.black,
-        body: SafeArea(
-          child: SizedBox.expand(
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('images/backgroundapp.png'),
-                  fit: BoxFit.cover,
+        body: Stack(
+          children: [
+
+            SizedBox.expand(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('images/backgroundapp.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: ButtonsPage(
-                  trackingController: controller,
-                  isPip: MediaQuery.of(context).size.width < 400,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: ButtonsPage(
+                    trackingController: controller,
+                    isPip: MediaQuery.of(context).size.width < 400,
+                  ),
                 ),
               ),
             ),
-          ),
+            Positioned(
+              bottom: 792,
+              right: 254,
+              child: ElevatedButton(
+                onPressed: enterPip,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.transparent,
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 8,
+                  ),
+                  child: Text(
+                    'MT',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+              ),
+            ),
+            if (isInPip)
+              PipOverlay(controller: controller, isInPip: true),
+          ],
         ),
       ),
-      );
+    );
   }
 }
