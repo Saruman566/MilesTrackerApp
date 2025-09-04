@@ -52,7 +52,6 @@ class _MileToReserveAppState extends State<MileToReserveApp>
         backgroundColor: Colors.black,
         body: Stack(
           children: [
-
             SizedBox.expand(
               child: Container(
                 decoration: BoxDecoration(
@@ -61,18 +60,15 @@ class _MileToReserveAppState extends State<MileToReserveApp>
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: ButtonsPage(
                     trackingController: controller,
                     isPip: MediaQuery.of(context).size.width < 400,
                   ),
-                ),
               ),
             ),
             Positioned(
-              bottom: 792,
-              right: 254,
+              bottom: MediaQuery.of(context).size.height * 0.866,
+              right: MediaQuery.of(context).size.width * 0.618,
               child: ElevatedButton(
                 onPressed: enterPip,
                   style: ElevatedButton.styleFrom(

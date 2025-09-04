@@ -14,41 +14,38 @@ class TrackingControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonSize = MediaQuery.of(context).size.width * 0.20;
+
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 133, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 60, 0, 100),
       child: SizedBox(
-        width: 900,
-        height: 92,
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.1,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Start Button
-            _buildButton(onStart, 15, 7),
-            const SizedBox(width: 5),
-            // Stop Button
-            _buildButton(onStop, 0, 7),
-            const SizedBox(width: 5),
-            // Reset Button
-            _buildButton(onReset, 0, 10),
+            _buildButton(onStart, buttonSize),
+            const SizedBox(width: 30),
+            _buildButton(onStop, buttonSize),
+            const SizedBox(width: 25),
+            _buildButton(onReset, buttonSize),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildButton(VoidCallback onTap, double paddingLeft, double paddingRight) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(paddingLeft, 0, paddingRight, 0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          child: SizedBox(
-            width: 100,
-            height: 100,
-          ),
+  Widget _buildButton(VoidCallback onTap, double size) {
+    return Material(
+      color: Colors.red.withOpacity(0.5),
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          width: size,
+          height: size,
         ),
       ),
     );
   }
+
 }

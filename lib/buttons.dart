@@ -22,7 +22,8 @@ class _ButtonsPageState extends State<ButtonsPage> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 900,
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -30,11 +31,10 @@ class _ButtonsPageState extends State<ButtonsPage> {
               controller: widget.trackingController,
               isPip: widget.isPip,
             ),
-            const SizedBox(height: 118),
             MilesInput(
               controller: widget.trackingController,
               onMilesChanged: () {
-                setState(() {}); // ✅ jetzt funktioniert es
+                setState(() {});
               },
             ),
           ],
