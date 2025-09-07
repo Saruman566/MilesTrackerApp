@@ -8,12 +8,12 @@ class TrackingController {
   int milesBeforeRefuel = 153;
   Position? lastPosition;
   StreamSubscription<Position>? positionStream;
-  String status = "Bereit";
+  String status = "Ready";
   double _distanceMeters = 0;
   Timer? _uiTimer;
 
   ValueNotifier<int> milesNotifier = ValueNotifier<int>(153);
-  ValueNotifier<String> statusNotifier = ValueNotifier<String>("Bereit");
+  ValueNotifier<String> statusNotifier = ValueNotifier<String>("Ready");
 
   ValueNotifier<int> milesPipNotifier = ValueNotifier<int>(153);
 
@@ -47,7 +47,7 @@ class TrackingController {
 
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      _updateStatus("GPS deaktiviert");
+      _updateStatus("GPS disabled");
       return;
     }
 
@@ -55,16 +55,16 @@ class TrackingController {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        _updateStatus("Keine Berechtigung");
+        _updateStatus("No authorization");
         return;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      _updateStatus("Dauerhaft verweigert");
+      _updateStatus("Permanently denied");
       return;
     }
 
-    _updateStatus("Tracking gestartet");
+    _updateStatus("Tracking started");
 
     positionStream = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
@@ -106,7 +106,7 @@ class TrackingController {
     positionStream?.cancel();
     positionStream = null;
     stopUiTimer();
-    _updateStatus("Tracking gestoppt");
+    _updateStatus("Tracking stopped");
   }
 
   void resetMiles() {
@@ -120,7 +120,7 @@ class TrackingController {
     saveMiles();
     stopTracking();
 
-    _updateStatus("Zurückgesetzt");
+    _updateStatus("Reset");
   }
 
   void _updateStatus(String newStatus) {
@@ -142,7 +142,7 @@ class TrackingController {
 
       milesNotifier.value = milesBeforeRefuel;
       milesPipNotifier.value = milesBeforeRefuel;
-      _updateStatus("Tracking aktiv");
+      _updateStatus("Tracking active");
 
       saveMiles();
     });

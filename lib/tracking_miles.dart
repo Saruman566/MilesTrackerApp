@@ -25,15 +25,12 @@ class _TrackingMilesState extends State<TrackingMiles> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // --- Status ---
           Padding(
             padding: const EdgeInsets.fromLTRB(75, 0, 0, 0),
             child: ValueListenableBuilder<String>(
               valueListenable: widget.controller.statusNotifier,
               builder: (_, status, __) {
-                // Miles abrufen für dynamisches Padding
                 final miles = widget.controller.milesNotifier.value;
-
                 return Padding(
                   padding: miles != 0
                       ? const EdgeInsets.only(top: 0, left: 10, bottom: 0)
@@ -49,8 +46,6 @@ class _TrackingMilesState extends State<TrackingMiles> {
               },
             ),
           ),
-
-          // --- Große Miles-Anzeige mit Controls ---
           Transform.translate(
             offset: const Offset(0, -10),
             child: ValueListenableBuilder<int>(
