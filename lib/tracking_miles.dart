@@ -25,17 +25,21 @@ class _TrackingMilesState extends State<TrackingMiles> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // --- Status ---
           Padding(
             padding: const EdgeInsets.fromLTRB(75, 0, 0, 0),
             child: ValueListenableBuilder<String>(
               valueListenable: widget.controller.statusNotifier,
-              builder: (_, value, __) {
+              builder: (_, status, __) {
+                // Miles abrufen für dynamisches Padding
+                final miles = widget.controller.milesNotifier.value;
+
                 return Padding(
-                  padding: value != '0'
-                      ? const EdgeInsets.only(top: 5, left: 10)
-                      : const EdgeInsets.only(top: 0, left: 0),
+                  padding: miles != 0
+                      ? const EdgeInsets.only(top: 0, left: 10, bottom: 0)
+                      : const EdgeInsets.only(top: 0, left: 10, bottom: 50),
                   child: Text(
-                    value != '0' ? '$value' : 'Reserve',
+                    status,
                     style: TextStyle(
                       fontSize: widget.isPip ? 12 : 19,
                       color: Colors.white70,
@@ -43,7 +47,10 @@ class _TrackingMilesState extends State<TrackingMiles> {
                   ),
                 );
               },
-            ),),
+            ),
+          ),
+
+          // --- Große Miles-Anzeige mit Controls ---
           Transform.translate(
             offset: const Offset(0, -10),
             child: ValueListenableBuilder<int>(
@@ -51,26 +58,19 @@ class _TrackingMilesState extends State<TrackingMiles> {
               builder: (_, value, __) {
                 final screenWidth = MediaQuery.of(context).size.width;
 
-                double fontSize;
-                if (value == 0) {
-                  fontSize = widget.isPip
-                      ? screenWidth * 0.08
-                      : screenWidth * 0.14;
-                } else {
-                  fontSize = widget.isPip
-                      ? screenWidth * 0.1
-                      : screenWidth * 0.275;
-                }
+                double fontSize = (value == 0)
+                    ? (widget.isPip ? screenWidth * 0.08 : screenWidth * 0.14)
+                    : (widget.isPip ? screenWidth * 0.1 : screenWidth * 0.275);
 
                 double spacing = (value == 0)
-                    ? (widget.isPip ? 4 : 190)
-                    : (widget.isPip ? 8 : 110);
+                    ? (widget.isPip ? 4 : 140)
+                    : (widget.isPip ? 4 : 110);
 
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      value != 0 ? '$value' : 'Reserve',
+                      value != 0 ? '$value' : ' Reserve',
                       style: TextStyle(
                         fontSize: fontSize,
                         fontWeight: FontWeight.bold,
