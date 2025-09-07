@@ -37,7 +37,7 @@ class TrackingControls extends StatelessWidget {
 
   Widget _buildButton(VoidCallback onTap, double size) {
     return Material(
-      color: Colors.red.withOpacity(0.5),
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: SizedBox(
