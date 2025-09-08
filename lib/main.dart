@@ -102,7 +102,7 @@ class _MileToReserveAppState extends State<MileToReserveApp>
                     onPressed: () {
                       Navigator.push(
                         innerContext, // <--- WICHTIG: innerContext benutzen
-                        MaterialPageRoute(builder: (context) => SettingsPage()),
+                        MaterialPageRoute(builder: (context) => ConfigPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
