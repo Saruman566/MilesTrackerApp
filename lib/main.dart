@@ -3,6 +3,7 @@ import 'buttons.dart';
 import 'tracking_controller.dart';
 import 'package:simple_pip_mode/simple_pip.dart';
 import 'pip_view.dart';
+import 'config.dart';
 
 void main() => runApp(const MileToReserveApp());
 
@@ -44,6 +45,8 @@ class _MileToReserveAppState extends State<MileToReserveApp>
     setState(() => isInPip = true);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,7 +58,7 @@ class _MileToReserveAppState extends State<MileToReserveApp>
           children: [
             SizedBox.expand(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('images/backgroundapp.png'),
                     fit: BoxFit.cover,
@@ -75,19 +78,48 @@ class _MileToReserveAppState extends State<MileToReserveApp>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: Colors.transparent,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 8,
                   ),
-                  child: Text(
+                  child: const Text(
                     'MT',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+              ),
+            ),
+            Positioned(
+              bottom: MediaQuery.of(context).size.height * 0.91,
+              right: MediaQuery.of(context).size.width * 0.01,
+              child: Builder(
+                builder: (innerContext) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        innerContext, // <--- WICHTIG: innerContext benutzen
+                        MaterialPageRoute(builder: (context) => SettingsPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.blueAccent,
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 8,
+                    ),
+                    child: const Icon(
+                      Icons.settings,
+                      size: 40,
+                    ),
+                  );
+                },
               ),
             ),
             if (isInPip)
