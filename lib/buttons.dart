@@ -23,7 +23,7 @@ class _ButtonsPageState extends State<ButtonsPage> {
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

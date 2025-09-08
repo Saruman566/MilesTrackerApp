@@ -49,6 +49,7 @@ class _MileToReserveAppState extends State<MileToReserveApp>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.black,
         body: Stack(
           children: [
