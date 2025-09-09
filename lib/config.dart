@@ -50,6 +50,14 @@ class _ConfigPageState extends State<ConfigPage> {
     selectedConsumption = (selectedCategory!["consumption"] as List<double>)[0];
   }
 
+  void mileCalculation() {
+    print("bla");
+  }
+
+  void getBack() {
+    print("back");
+  }
+
   Widget buildDropdown<T>({
     required T? value,
     required List<T> items,
@@ -128,6 +136,7 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     final boxheight = MediaQuery.of(context).size.height * 0.1;
+    final boxheight2 = MediaQuery.of(context).size.height * 0.05;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -183,6 +192,30 @@ class _ConfigPageState extends State<ConfigPage> {
                   items: (selectedCategory!["consumption"] as List<double>),
                   onChanged: (val) => setState(() => selectedConsumption = val),
                   labelBuilder: (v) => "$v L/100km",
+                ),
+                SizedBox(height: boxheight2),
+                ElevatedButton(
+                  onPressed: mileCalculation,
+                  child: const Text(
+                    "Give me max Miles",
+                    style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+
+                    ),
+                  ),
+                ),
+                SizedBox(height: boxheight2 -20),
+                ElevatedButton(
+                  onPressed: getBack,
+                  child: const Text(
+                    "Get Back",
+                    style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+
+                    ),
+                  ),
                 ),
               ],
             ),
