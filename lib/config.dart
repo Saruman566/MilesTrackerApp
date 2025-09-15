@@ -59,10 +59,22 @@ class _ConfigPageState extends State<ConfigPage> {
     final reserve = double.tryParse(reserveController.text) ?? 0.0;
     final consumption = double.tryParse(consumptionController.text) ?? 0.0;
 
+    if (tank <= 0 && reserve <= 0 && consumption <= 0) {
+      resultMaxMiles = 246;
+      changeKmToMiles(resultMaxMiles);
+      return;
+    }
+    if (consumption <= 0) {
+      resultMaxMiles = 246;
+      changeKmToMiles(resultMaxMiles);
+      return;
+    }
     resultMaxMiles = (tank - reserve) / (consumption / 100);
+    if (resultMaxMiles.isInfinite || resultMaxMiles.isNaN || resultMaxMiles < 0) {
+      resultMaxMiles = 246;
+    }
     changeKmToMiles(resultMaxMiles);
   }
-
 
   void getBack() {
     Navigator.pop(context);
