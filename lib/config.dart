@@ -51,9 +51,6 @@ class _ConfigPageState extends State<ConfigPage> {
     int roundedMiles = (miles).round();
 
     widget.controller?.milesBeforeRefuel = roundedMiles;
-
-    print(roundedMiles);
-
     Navigator.pop(context, roundedMiles);
   }
 

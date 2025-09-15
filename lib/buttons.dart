@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tracking_miles.dart';
 import 'tracking_controller.dart';
-import 'MilesInput.dart';
+import 'miles_input.dart';
 
 class ButtonsPage extends StatefulWidget {
   final TrackingController trackingController;

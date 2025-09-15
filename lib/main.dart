@@ -109,8 +109,6 @@ class _MileToReserveAppState extends State<MileToReserveApp>
                       if (result != null) {
                         controller.updateMiles(result);
                       }
-                      print("neue miles:");
-                      print(controller.milesBeforeRefuel);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
