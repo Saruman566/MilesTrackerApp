@@ -1,142 +1,224 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'tracking_controller.dart';
 
 class ConfigPage extends StatefulWidget {
-  const ConfigPage({Key? key}) : super(key: key);
+  final TrackingController? controller;
+  const ConfigPage({Key? key, this.controller}) : super(key: key);
 
   @override
   State<ConfigPage> createState() => _ConfigPageState();
 }
 
 class _ConfigPageState extends State<ConfigPage> {
+  final List<String> titles = ["Litre", "Litre", "Litre/100km"];
   final List<Map<String, dynamic>> motorcycles = [
     {
-      "motorcycle": "Naked / Street",
-      "tank": [12, 13, 15, 16, 17, 18],
-      "reserve": [2, 3],
-      "consumption": [3.5, 4.0, 4.5, 5.0],
+      "category": "Naked / Street",
     },
     {
-      "motorcycle": "Sport Touring",
-      "tank": [16, 17, 18, 19, 20],
-      "reserve": [3, 4],
-      "consumption": [4.5, 5.0, 5.5, 6.0],
+      "category": "Sport Touring",
     },
     {
-      "motorcycle": "Adventure / Touring",
-      "tank": [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-      "reserve": [5],
-      "consumption": [5.0, 5.5, 6.0, 6.5, 7.0],
+      "category": "Adventure / Touring",
     },
     {
-      "motorcycle": "Rally / Long-Distance",
-      "tank": [30, 31, 32, 33, 34, 35, 36],
-      "reserve": [5, 6, 7, 8, 9],
-      "consumption": [6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0],
+      "category": "Rally / Long-Distance",
     },
   ];
 
   Map<String, dynamic>? selectedCategory;
-  int? selectedTank;
-  int? selectedReserve;
+  double? selectedTank;
+  double? selectedReserve;
   double? selectedConsumption;
+  double resultMaxMiles = 0.0;
+
+  late TextEditingController tankController;
+  late TextEditingController reserveController;
+  late TextEditingController consumptionController;
 
   @override
   void initState() {
     super.initState();
     selectedCategory = motorcycles[0];
-    selectedTank = (selectedCategory!["tank"] as List<int>)[0];
-    selectedReserve = (selectedCategory!["reserve"] as List<int>)[0];
+    selectedTank = (selectedCategory!["tank"] as List<double>)[0];
+    selectedReserve = (selectedCategory!["reserve"] as List<double>)[0];
     selectedConsumption = (selectedCategory!["consumption"] as List<double>)[0];
-  }
 
-  void mileCalculation() {
-    print("bla");
-  }
-
-  void getBack() {
-    print("back");
-  }
-
-  Widget buildDropdown<T>({
-    required T? value,
-    required List<T> items,
-    required ValueChanged<T?> onChanged,
-    String Function(T)? labelBuilder,
-  }) {
-    return Builder(
-      builder: (context) {
-        final width = MediaQuery.of(context).size.width * 0.85;
-        final height = MediaQuery.of(context).size.height * 0.08;
-
-        return Container(
-          width: width,
-          height: height,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<T>(
-              value: value,
-              items: items
-                  .map((e) => DropdownMenuItem<T>(
-                value: e,
-                child: Center(
-                  child: Text(
-                    labelBuilder != null ? labelBuilder(e) : e.toString(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-                      fontFamily: 'Arial',
-                    ),
-                  ),
-                ),
-              ))
-                  .toList(),
-              onChanged: onChanged,
-              isExpanded: true,
-              buttonStyleData: ButtonStyleData(
-                height: height,
-                width: width,
-                padding: const EdgeInsets.symmetric(horizontal:  1),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              menuItemStyleData: MenuItemStyleData(
-                height: height,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-              ),
-              dropdownStyleData: DropdownStyleData(
-                width: width,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.blueAccent,
-                    width: 2,
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 6),
-               offset: const Offset(-15, 0),
-              ),
-            )
-          ),
-        );
-      },
+    tankController = TextEditingController(text: selectedTank.toString());
+    reserveController = TextEditingController(text: selectedReserve.toString());
+    consumptionController = TextEditingController(
+      text: selectedConsumption.toString(),
     );
   }
 
+  void changeKmToMiles(double resultMaxKilometer) {
+    double miles = resultMaxKilometer * 0.621371;
+    String stringMiles = miles.toStringAsFixed(1);
+    double roundedMiles = double.parse(stringMiles);
+    widget.controller?.milesBeforeRefuel = roundedMiles.round();
+
+    print(miles.round());
+    Navigator.pop(context);
+  }
+
+  void mileCalculation() {
+    double tank = double.tryParse(tankController.text) ?? 0;
+    double reserve = double.tryParse(reserveController.text) ?? 0;
+    double consumption = double.tryParse(consumptionController.text) ?? 0;
+
+    resultMaxMiles = (tank - reserve) / (consumption / 100);
+    changeKmToMiles(resultMaxMiles);
+  }
+
+  void getBack() {
+    Navigator.pop(context);
+  }
+
+  Widget buildDropdownCategory() {
+    return DropdownButton<Map<String, dynamic>>(
+      value: selectedCategory,
+      items: motorcycles
+          .map(
+            (e) => DropdownMenuItem<Map<String, dynamic>>(
+              value: e,
+              child: Text(
+                e["motorcycle"],
+                style: const TextStyle(fontSize: 25, color: Colors.blueAccent),
+              ),
+            ),
+          )
+          .toList(),
+      onChanged: (newCategory) {
+        setState(() {
+          selectedCategory = newCategory;
+
+          tankController.text = selectedTank.toString();
+          reserveController.text = selectedReserve.toString();
+          consumptionController.text = selectedConsumption.toString();
+        });
+      },
+      isExpanded: true,
+    );
+  }
+
+  Widget buildNumberInputField(
+    TextEditingController controller,
+    String label,
+    double inputHeight,
+    double inputWidth,
+  ) {
+    return SizedBox(
+      height: inputHeight,
+      width: inputWidth,
+      child: TextField(
+        textAlign: TextAlign.center,
+        controller: controller,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        style: const TextStyle(fontSize: 40, color: Colors.blueAccent),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(fontSize: 30, color: Colors.white70),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(color: Colors.black, width: 0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(
+              color: Colors.lightBlueAccent,
+              width: 2,
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  Widget buildInputRow(
+      TextEditingController tankController,
+      double inputHeight,
+      double inputWidth,
+      double inputBoxheight,
+      double inputBoxWidth,
+      ) {
+    return Row(
+      children: [
+        buildNumberInputField(
+          tankController,
+          "",
+          inputHeight,
+          inputWidth,
+        ),
+        SizedBox(
+          height: inputBoxheight,
+          width: inputBoxWidth,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Center(
+              child: Text(
+                "Litre",
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueAccent,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget calculationButtons(BuildContext context) {
+    final boxheight4 = MediaQuery.of(context).size.height * 0.06;
+    return Container(
+      padding:  const EdgeInsets.fromLTRB(0, 0, 28, 0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ElevatedButton(
+            onPressed: mileCalculation,
+            child: const Text(
+              "Give me max Miles",
+              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(height: boxheight4 - 30),
+          ElevatedButton(
+            onPressed: getBack,
+            child: const Text(
+              "Get Back",
+              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    final boxheight = MediaQuery.of(context).size.height * 0.1;
-    final boxheight2 = MediaQuery.of(context).size.height * 0.05;
+    // placeholder
+    final boxheight = MediaQuery.of(context).size.height * 0.142;
+    final boxheight1 = MediaQuery.of(context).size.height * 0.103;
+    final boxheight2 = MediaQuery.of(context).size.height * 0.103;
+    final boxheight3 = MediaQuery.of(context).size.height * 0.05;
+    // text-field
+    final inputBoxWidth = MediaQuery.of(context).size.width * 0.45;
+    final inputBoxheight = MediaQuery.of(context).size.height * 0.08;
+    // input-field
+    final inputWidth = MediaQuery.of(context).size.width * 0.4;
+    final inputHeight = MediaQuery.of(context).size.height * 0.09;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -152,71 +234,20 @@ class _ConfigPageState extends State<ConfigPage> {
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 102, 0, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                buildDropdown<Map<String, dynamic>>(
-                  value: selectedCategory,
-                  items: motorcycles,
-                  onChanged: (newCategory) {
-                    setState(() {
-                      selectedCategory = newCategory;
-                      selectedTank = (newCategory!["tank"] as List<int>)[0];
-                      selectedReserve = (newCategory["reserve"] as List<int>)[0];
-                      selectedConsumption =
-                      (newCategory["consumption"] as List<double>)[0];
-                    });
-                  },
-                  labelBuilder: (cat) => cat["motorcycle"],
-                ),
+                buildDropdownCategory(),
                 SizedBox(height: boxheight),
-                buildDropdown<int>(
-                  value: selectedTank,
-                  items: (selectedCategory!["tank"] as List<int>),
-                  onChanged: (val) => setState(() => selectedTank = val),
-                  labelBuilder: (v) => "$v L",
-                ),
-                SizedBox(height: boxheight),
-                buildDropdown<int>(
-                  value: selectedReserve,
-                  items: (selectedCategory!["reserve"] as List<int>),
-                  onChanged: (val) => setState(() => selectedReserve = val),
-                  labelBuilder: (v) => "$v L",
-                ),
-                SizedBox(height: boxheight),
-                buildDropdown<double>(
-                  value: selectedConsumption,
-                  items: (selectedCategory!["consumption"] as List<double>),
-                  onChanged: (val) => setState(() => selectedConsumption = val),
-                  labelBuilder: (v) => "$v L/100km",
-                ),
+                buildInputRow(tankController, inputHeight, inputWidth, inputBoxheight, inputBoxWidth),
+                SizedBox(height: boxheight1),
+                buildInputRow(reserveController, inputHeight, inputWidth, inputBoxheight, inputBoxWidth),
                 SizedBox(height: boxheight2),
-                ElevatedButton(
-                  onPressed: mileCalculation,
-                  child: const Text(
-                    "Give me max Miles",
-                    style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-
-                    ),
-                  ),
-                ),
-                SizedBox(height: boxheight2 -20),
-                ElevatedButton(
-                  onPressed: getBack,
-                  child: const Text(
-                    "Get Back",
-                    style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-
-                    ),
-                  ),
-                ),
+                buildInputRow(consumptionController, inputHeight, inputWidth, inputBoxheight, inputBoxWidth),
+                SizedBox(height: boxheight3),
+                calculationButtons(context),
               ],
             ),
           ),
