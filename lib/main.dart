@@ -99,11 +99,18 @@ class _MileToReserveAppState extends State<MileToReserveApp>
               child: Builder(
                 builder: (innerContext) {
                   return ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        innerContext, // <--- WICHTIG: innerContext benutzen
-                        MaterialPageRoute(builder: (context) => ConfigPage()),
+                    onPressed: () async {
+                      final result = await Navigator.push(
+                        innerContext,
+                        MaterialPageRoute(
+                          builder: (_) => ConfigPage(controller: controller),
+                        ),
                       );
+                      if (result != null) {
+                        controller.updateMiles(result);
+                      }
+                      print("neue miles:");
+                      print(controller.milesBeforeRefuel);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,

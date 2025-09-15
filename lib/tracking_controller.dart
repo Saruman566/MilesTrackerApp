@@ -123,6 +123,14 @@ class TrackingController {
     _updateStatus("Reset");
   }
 
+  void updateMiles(int value) {
+    milesBeforeRefuel = value.clamp(0, _startMiles);
+    milesNotifier.value = milesBeforeRefuel;
+    milesPipNotifier.value = milesBeforeRefuel;
+    saveMiles();
+  }
+
+
   void _updateStatus(String newStatus) {
     status = newStatus;
     statusNotifier.value = newStatus;

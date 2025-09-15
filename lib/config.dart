@@ -39,36 +39,33 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   void initState() {
     super.initState();
-    selectedCategory = motorcycles[0];
-    selectedTank = (selectedCategory!["tank"] as List<double>)[0];
-    selectedReserve = (selectedCategory!["reserve"] as List<double>)[0];
-    selectedConsumption = (selectedCategory!["consumption"] as List<double>)[0];
-
-    tankController = TextEditingController(text: selectedTank.toString());
-    reserveController = TextEditingController(text: selectedReserve.toString());
+    tankController = TextEditingController(text: 0.toString());
+    reserveController = TextEditingController(text: 0.toString());
     consumptionController = TextEditingController(
-      text: selectedConsumption.toString(),
+      text: 0.toString(),
     );
   }
 
   void changeKmToMiles(double resultMaxKilometer) {
     double miles = resultMaxKilometer * 0.621371;
-    String stringMiles = miles.toStringAsFixed(1);
-    double roundedMiles = double.parse(stringMiles);
-    widget.controller?.milesBeforeRefuel = roundedMiles.round();
+    int roundedMiles = (miles).round();
 
-    print(miles.round());
-    Navigator.pop(context);
+    widget.controller?.milesBeforeRefuel = roundedMiles;
+
+    print(roundedMiles);
+
+    Navigator.pop(context, roundedMiles);
   }
 
   void mileCalculation() {
-    double tank = double.tryParse(tankController.text) ?? 0;
-    double reserve = double.tryParse(reserveController.text) ?? 0;
-    double consumption = double.tryParse(consumptionController.text) ?? 0;
+    final tank = double.tryParse(tankController.text) ?? 0.0;
+    final reserve = double.tryParse(reserveController.text) ?? 0.0;
+    final consumption = double.tryParse(consumptionController.text) ?? 0.0;
 
     resultMaxMiles = (tank - reserve) / (consumption / 100);
     changeKmToMiles(resultMaxMiles);
   }
+
 
   void getBack() {
     Navigator.pop(context);
@@ -208,7 +205,7 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     // placeholder
-    final boxheight = MediaQuery.of(context).size.height * 0.142;
+    final boxheight = MediaQuery.of(context).size.height * 0.194;
     final boxheight1 = MediaQuery.of(context).size.height * 0.103;
     final boxheight2 = MediaQuery.of(context).size.height * 0.103;
     final boxheight3 = MediaQuery.of(context).size.height * 0.05;
@@ -239,7 +236,6 @@ class _ConfigPageState extends State<ConfigPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                buildDropdownCategory(),
                 SizedBox(height: boxheight),
                 buildInputRow(tankController, inputHeight, inputWidth, inputBoxheight, inputBoxWidth),
                 SizedBox(height: boxheight1),
