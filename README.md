@@ -1,6 +1,6 @@
 # MilesTracker
 
-A App to Track Miles from Motorcycle by GPS and Google Location Services.
+A MobileApp to Track Miles from Motorcycle by GPS and Google Location Services.
 
 ![B6C50FFB-58DA-4F6B-8B4F-C5DCE93A3206_4_5005_c](https://github.com/user-attachments/assets/36ac1a89-c7ba-4dde-8b69-9bb7980b71a8)
 
