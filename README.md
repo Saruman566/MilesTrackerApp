@@ -2,6 +2,9 @@
 
 A App to Track Miles from Motorcycle by GPS and Google Location Services.
 
+![B6C50FFB-58DA-4F6B-8B4F-C5DCE93A3206_4_5005_c](https://github.com/user-attachments/assets/36ac1a89-c7ba-4dde-8b69-9bb7980b71a8)
+
+
 It was written for a motorcycle with a 20-liter tank.
 The consumption was calculated based on moderate driving,
 so that 153 miles is the maximum before the reserve kicks in.
@@ -14,8 +17,13 @@ Input: 44
 Max: 153
 Miles to start tracking: 109
 
-From the Author:
+You can access the configuration page using the cog icon in the top right-hand corner.
 
-This motorcycle is a youngtimer from America and therefore does not have an accurate fuel gauge. You have to estimate or calculate this based on the kilometers/miles driven. Hence the idea for this app. 
+<img width="254" height="535" alt="Bildschirmfoto 2025-09-15 um 21 14 25" src="https://github.com/user-attachments/assets/2ee273cf-ff5c-4409-87bf-87041b002abe" />
+
+Here you can specify the tank size, reserve and consumption per 100 km.
+
+With this information, you can now calculate and display the new maximum mileage. 
+
 
 Have Fun.
